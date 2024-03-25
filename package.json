@@ -1,0 +1,42 @@
+{
+  "name": "queaxtra-api",
+  "version": "1.0.0",
+  "description": "This API was created to provide different help to users.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "generate password api",
+    "random password api",
+    "random password generator api",
+    "random password generator",
+    "create user api",
+    "create user",
+    "create user with password",
+    "currency converter api",
+    "currency exchange api",
+    "random data generator",
+    "queaxtra",
+    "unoxdevs",
+    "free api",
+    "api nodejs",
+    "nodejs api",
+    "nodejs",
+    "open source api"
+  ],
+  "author": "Queaxtra & UnoxDevs",
+  "license": "MIT",
+  "dependencies": {
+    "cheerio": "1.0.0-rc.12",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.5",
+    "fs": "0.0.1-security",
+    "gpti": "^2.0.6",
+    "randombytes": "^2.1.0",
+    "ytdl-core": "^4.11.5"
+  },
+  "devDependencies": {
+    "weather-turkey": "^0.0.78"
+  }
+}
