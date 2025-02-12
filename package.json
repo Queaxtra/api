@@ -1,0 +1,17 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "This API was created to provide different help to users.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Queaxtra",
+  "license": "MIT",
+  "dependencies": {
+    "@distube/ytdl-core": "^4.16.3",
+    "cors": "^2.8.5",
+    "express": "^4.21.2"
+  }
+}
