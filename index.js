@@ -6,6 +6,9 @@ const api = {
     generatePassword: require('./api/generatePassword'),
     userGenerator: require('./api/userGenerator'),
     ytDownload: require('./api/ytDownload'),
+    ip: require('./api/ip'),
+    weather: require('./api/weather'),
+    validateCreditCard: require('./api/validateCreditCard'),
 };
 
 app.use(cors());
@@ -21,6 +24,9 @@ app.use(function (req, res, next) {
 app.use('/api/generate/password', api.generatePassword);
 app.use('/api/generate/user', api.userGenerator);
 app.use('/api/yt/download', api.ytDownload);
+app.use('/api/ip', api.ip);
+app.use('/api/weather', api.weather);
+app.use('/api/validate/card', api.validateCreditCard);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);

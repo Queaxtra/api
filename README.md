@@ -11,7 +11,7 @@
 - Output:
 ```json
 {
-  "Password": "(ktDwFrk,$MsDadr{BeG"
+  "password": "(ktDwFrk,$MsDadr{BeG"
 }
 ```
 ### 👱‍♂️ Random User Generation Endpoint
@@ -21,24 +21,105 @@
 - Output:
 ```json
 {
-  "firstName": "Netty",
-  "lastName": "Salomon",
-  "mail": "nettysalomon94@outlook.com",
-  "country": "Costa Rica",
-  "password": "MjUXtgQ,+OSq",
+  "firstName": "Selene",
+  "lastName": "Byram",
+  "mail": "selenebyram97@gmail.com",
+  "country": "Japan",
+  "password": "Z-WPH%|Wu{K;",
   "card": {
-    "balance": 5504,
-    "cardNumber": "110865516482223",
+    "balance": 9496,
+    "cardNumber": "9964609699005209",
     "cardType": "MasterCard",
-    "month": 1,
-    "year": 2029,
-    "day": 25,
-    "cvv": 643
+    "month": 7,
+    "year": 2024,
+    "day": 28,
+    "cvv": "723"
   }
 }
 ```
 
 ### 🎗️ Youtube Downloader
 - HTTP Method: **GET**
-- Endpoint: **/api/yt/download?url=&title=**
+- Endpoint: **/api/download?url=&title=**
 - Description: You can download any Youtube link you want for free.
+
+### 🌍 IP Address Information Endpoint
+- HTTP Method: **GET**
+- Endpoint: **/api/ip?ip={ip_address}**
+- Description: This endpoint retrieves information about a given IP address.
+- Parameters:
+  - `ip` (required): The IP address to look up. Must be a valid IPv4 address.
+- Output:
+```json
+{
+  "ip": "8.8.8.8",
+  "city": "Mountain View",
+  "region": "California",
+  "country": "United States",
+  "country_code": "US",
+  "latitude": 37.42301,
+  "longitude": -122.083352,
+  "timezone": "America/Los_Angeles",
+  "organization": "GOOGLE",
+  "postal_code": "94043",
+  "currency": "USD",
+  "currency_name": "Dollar",
+  "language": "en-US,es-US,haw,fr",
+  "country_population": "327,167,434"
+}
+```
+
+### ☀️ Weather Information Endpoint
+- HTTP Method: **GET**
+- Endpoint: **/api/weather?city={city_name}**
+- Description: This endpoint retrieves current weather information and a short-term forecast for a given city.
+- Parameters:
+  - `city` (required): The name of the city.
+- Output:
+```json
+{
+  "city": "New York",
+  "country": "United States",
+  "coordinates": {
+    "latitude": 40.71427,
+    "longitude": -74.00597
+  },
+  "current_condition": {
+    "temperature": 1.1,
+    "feels_like": -3.7,
+    "humidity": 67,
+    "precipitation": 0,
+    "rain": 0,
+    "snowfall": 0,
+    "weather_code": 3,
+    "weather_description": "Overcast",
+    "cloud_cover": 100,
+    "wind_speed": 14
+  },
+  "next_hours": {
+    "time": [
+      "2025-02-12T00:00",
+      "2025-02-12T01:00",
+      "2025-02-12T02:00"
+    ],
+    "temperature_2m": [-0.9, -1.1, -1.1],
+    "precipitation_probability": [47, 59, 58],
+    "weather_code": [73, 73, 73]
+  }
+}
+```
+
+### ✅ Credit Card Validation Endpoint
+- HTTP Method: **GET**
+- Endpoint: **/api/validate/card?cardNumber={card_number}**
+- Description: This endpoint validates a credit card number using the Luhn algorithm and determines the card type. It supports the following card types: Visa, MasterCard, American Express, Discover, Diners Club, JCB, UnionPay, and Maestro.
+- Parameters:
+  - `cardNumber` (required): The credit card number to validate.
+- Output:
+```json
+{
+  "card_number": "5451638889576641",
+  "card_type": "MasterCard",
+  "is_valid": true
+}
+```

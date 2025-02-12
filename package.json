@@ -12,6 +12,8 @@
   "dependencies": {
     "@distube/ytdl-core": "^4.16.3",
     "cors": "^2.8.5",
-    "express": "^4.21.2"
+    "cross-fetch": "^4.1.0",
+    "express": "^4.21.2",
+    "ipapi.co": "^0.3.0"
   }
 }

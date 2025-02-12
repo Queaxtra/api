@@ -80,7 +80,7 @@ router.get('/', (req, res) => {
         const options = { numbers, lowercase, uppercase, symbols, guaranteeInclusion };
         const password = generatePassword(length, options);
 
-        const formattedJSON = JSON.stringify({ "Password": password }, null, 2);
+        const formattedJSON = JSON.stringify({ "password": password }, null, 2);
         res.setHeader('Content-Type', 'application/json');
         res.send(formattedJSON);
 
