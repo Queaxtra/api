@@ -6,17 +6,17 @@
 
 ### 🚀 Password Generation Endpoint
 - HTTP Method: **GET**
-- Endpoint: **/api/generatePassword**
+- Endpoint: **/api/generate/password?length=20**
 - Description: This endpoint allows users to create strong passwords.
 - Output:
 ```json
 {
-  "Password": "eAzpu[{2YTO8"
+  "Password": "(ktDwFrk,$MsDadr{BeG"
 }
 ```
 ### 👱‍♂️ Random User Generation Endpoint
 - HTTP Method: **GET**
-- Endpoint: **/api/userGenerator**
+- Endpoint: **/api/generate/user**
 - Description: This endpoint generates random user information.
 - Output:
 ```json
@@ -40,5 +40,5 @@
 
 ### 🎗️ Youtube Downloader
 - HTTP Method: **GET**
-- Endpoint: **/api/download?url=&title=**
+- Endpoint: **/api/yt/download?url=&title=**
 - Description: You can download any Youtube link you want for free.
