@@ -6,6 +6,7 @@ router.get('/', async (req, res) => {
     try {
         const URL = req.query.url;
         const title = req.query.title;
+        
         if (!URL || !title) {
             return res.status(400).send('Bad Request: URL and title are required.');
         }
@@ -20,6 +21,16 @@ router.get('/', async (req, res) => {
         }
 
         const videoStream = ytdl(URL, { format: formats[0].format });
+
+        videoStream.on('error', (err) => {
+            console.error('Stream Error:', err);
+            
+            if (!res.headersSent) {
+                res.status(500).send('Error during video stream.');
+            }
+
+            res.end();
+        });
 
         videoStream.pipe(res);
     } catch (error) {

@@ -40,7 +40,7 @@
 
 ### 🎗️ Youtube Downloader
 - HTTP Method: **GET**
-- Endpoint: **/api/download?url=&title=**
+- Endpoint: **/api/yt/download?url=&title=**
 - Description: You can download any Youtube link you want for free.
 
 ### 🌍 IP Address Information Endpoint
@@ -121,5 +121,47 @@
   "card_number": "5451638889576641",
   "card_type": "MasterCard",
   "is_valid": true
+}
+```
+
+### 🔒 AES Encryption Endpoint
+- HTTP Method: **GET**
+- Endpoint: **/api/aes/encrypt?text={text_to_encrypt}&key={encryption_key}**
+- Description: This endpoint encrypts the provided text using AES.
+- Parameters:
+  - `text` (required): The text to be encrypted.
+  - `key` (required): The secret key for encryption.
+- Output:
+```json
+{
+  "encrypted": "U2FsdGVkX1... (example encrypted string)"
+}
+```
+
+### 🔓 AES Decryption Endpoint
+- HTTP Method: **GET**
+- Endpoint: **/api/aes/decrypt?text={encrypted_text}&key={decryption_key}**
+- Description: This endpoint decrypts the provided AES encrypted text.
+- Parameters:
+  - `text` (required): The AES encrypted text.
+  - `key` (required): The secret key used for encryption.
+- Output:
+```json
+{
+  "decrypted": "your original text"
+}
+```
+
+### 🔳 QR Code Generation Endpoint
+- HTTP Method: **GET**
+- Endpoint: **/api/generate/qrcode?text={text_for_qr}&size={WIDTHxHEIGHT}**
+- Description: This endpoint generates a QR code image from the provided text.
+- Parameters:
+  - `text` (required): The text or data to encode in the QR code.
+  - `size` (optional): The desired size of the QR code image in pixels, formatted as WIDTHxHEIGHT (e.g., 300x300). Defaults to 200x200.
+- Output:
+```json
+{
+  "qrCode": "data:image/png;base64,..."
 }
 ```

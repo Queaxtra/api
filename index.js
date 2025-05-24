@@ -9,6 +9,9 @@ const api = {
     ip: require('./api/ip'),
     weather: require('./api/weather'),
     validateCreditCard: require('./api/validateCreditCard'),
+    generateQRCode: require('./api/generateQRCode'),
+    aesEncryption: require('./api/aesEncryption'),
+    aesDecryption: require('./api/aesDecryption'),
 };
 
 app.use(cors());
@@ -21,12 +24,19 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.get('/', (req, res) => {
+    res.send('Welcome to the API!');
+});
+
 app.use('/api/generate/password', api.generatePassword);
 app.use('/api/generate/user', api.userGenerator);
 app.use('/api/yt/download', api.ytDownload);
 app.use('/api/ip', api.ip);
 app.use('/api/weather', api.weather);
 app.use('/api/validate/card', api.validateCreditCard);
+app.use('/api/generate/qrcode', api.generateQRCode);
+app.use('/api/aes/encrypt', api.aesEncryption);
+app.use('/api/aes/decrypt', api.aesDecryption);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
