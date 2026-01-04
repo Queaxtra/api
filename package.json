@@ -10,13 +10,14 @@
   "author": "Queaxtra",
   "license": "MIT",
   "dependencies": {
-    "@distube/ytdl-core": "^4.16.10",
+    "@distube/ytdl-core": "^4.16.12",
     "cors": "^2.8.5",
     "cross-fetch": "^4.1.0",
     "crypto-js": "^4.2.0",
-    "express": "^5.1.0",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
     "ipapi.co": "^0.3.0",
-    "nodemon": "^3.1.10",
+    "nodemon": "^3.1.11",
     "qrcode": "^1.5.4"
   }
 }

@@ -1,24 +1,86 @@
 # API
 
-✨ This API was created to provide different help to users. The API has the following features:
+A modular REST API providing various utility endpoints for developers.
 
-⚠️ All of these created users and credit cards are invalid cards and you cannot make transactions with any of them. I do not accept any responsibility if any illegal activity is detected.
+> **Disclaimer:** All generated users and credit cards are fictional and invalid. They cannot be used for any real transactions. No responsibility is accepted for any misuse.
 
-### 🚀 Password Generation Endpoint
-- HTTP Method: **GET**
-- Endpoint: **/api/generate/password?length=20**
-- Description: This endpoint allows users to create strong passwords.
-- Output:
+## Table of Contents
+
+- [Installation](#installation)
+- [Project Structure](#project-structure)
+- [API Endpoints](#api-endpoints)
+  - [Password Generation](#password-generation)
+  - [User Generation](#user-generation)
+  - [YouTube Downloader](#youtube-downloader)
+  - [IP Information](#ip-information)
+  - [Weather Information](#weather-information)
+  - [Credit Card Validation](#credit-card-validation)
+  - [AES Encryption](#aes-encryption)
+  - [AES Decryption](#aes-decryption)
+  - [QR Code Generation](#qr-code-generation)
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/Queaxtra/api.git
+cd api
+
+# Install dependencies
+npm install
+
+# Create .env file
+echo "PORT=3000" > .env
+
+# Start the server
+npm start
+```
+
+## API Endpoints
+
+### Password Generation
+
+Generates a secure random password.
+
+```
+GET /api/generate/password
+```
+
+**Query Parameters:**
+
+| Parameter          | Type    | Default | Description                              |
+|--------------------|---------|---------|------------------------------------------|
+| length             | number  | 12      | Password length                          |
+| numbers            | boolean | true    | Include numbers                          |
+| lowercase          | boolean | true    | Include lowercase letters                |
+| uppercase          | boolean | true    | Include uppercase letters                |
+| symbols            | boolean | true    | Include symbols                          |
+| guaranteeInclusion | boolean | false   | Guarantee at least one of each char type |
+
+**Response:**
+
 ```json
 {
   "password": "(ktDwFrk,$MsDadr{BeG"
 }
 ```
-### 👱‍♂️ Random User Generation Endpoint
-- HTTP Method: **GET**
-- Endpoint: **/api/generate/user**
-- Description: This endpoint generates random user information.
-- Output:
+
+---
+
+### User Generation
+
+Generates random user information including credit card details.
+
+```
+GET /api/generate/user
+```
+
+**Query Parameters:**
+
+Same as [Password Generation](#password-generation) (applies to user password).
+
+**Response:**
+
 ```json
 {
   "firstName": "Selene",
@@ -38,18 +100,43 @@
 }
 ```
 
-### 🎗️ Youtube Downloader
-- HTTP Method: **GET**
-- Endpoint: **/api/yt/download?url=&title=**
-- Description: You can download any Youtube link you want for free.
+---
 
-### 🌍 IP Address Information Endpoint
-- HTTP Method: **GET**
-- Endpoint: **/api/ip?ip={ip_address}**
-- Description: This endpoint retrieves information about a given IP address.
-- Parameters:
-  - `ip` (required): The IP address to look up. Must be a valid IPv4 address.
-- Output:
+### YouTube Downloader
+
+Downloads audio from a YouTube video.
+
+```
+GET /api/yt/download
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Description          |
+|-----------|--------|----------|----------------------|
+| url       | string | Yes      | YouTube video URL    |
+| title     | string | Yes      | Output filename      |
+
+**Response:** Audio file stream (MP3)
+
+---
+
+### IP Information
+
+Retrieves geolocation and network information for an IP address.
+
+```
+GET /api/ip
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Description                |
+|-----------|--------|----------|----------------------------|
+| ip        | string | Yes      | Valid IPv4 address         |
+
+**Response:**
+
 ```json
 {
   "ip": "8.8.8.8",
@@ -69,13 +156,24 @@
 }
 ```
 
-### ☀️ Weather Information Endpoint
-- HTTP Method: **GET**
-- Endpoint: **/api/weather?city={city_name}**
-- Description: This endpoint retrieves current weather information and a short-term forecast for a given city.
-- Parameters:
-  - `city` (required): The name of the city.
-- Output:
+---
+
+### Weather Information
+
+Retrieves current weather and short-term forecast for a city.
+
+```
+GET /api/weather
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Description |
+|-----------|--------|----------|-------------|
+| city      | string | Yes      | City name   |
+
+**Response:**
+
 ```json
 {
   "city": "New York",
@@ -97,11 +195,7 @@
     "wind_speed": 14
   },
   "next_hours": {
-    "time": [
-      "2025-02-12T00:00",
-      "2025-02-12T01:00",
-      "2025-02-12T02:00"
-    ],
+    "time": ["2025-02-12T00:00", "2025-02-12T01:00", "2025-02-12T02:00"],
     "temperature_2m": [-0.9, -1.1, -1.1],
     "precipitation_probability": [47, 59, 58],
     "weather_code": [73, 73, 73]
@@ -109,13 +203,26 @@
 }
 ```
 
-### ✅ Credit Card Validation Endpoint
-- HTTP Method: **GET**
-- Endpoint: **/api/validate/card?cardNumber={card_number}**
-- Description: This endpoint validates a credit card number using the Luhn algorithm and determines the card type. It supports the following card types: Visa, MasterCard, American Express, Discover, Diners Club, JCB, UnionPay, and Maestro.
-- Parameters:
-  - `cardNumber` (required): The credit card number to validate.
-- Output:
+---
+
+### Credit Card Validation
+
+Validates a credit card number using the Luhn algorithm and determines the card type.
+
+**Supported Card Types:** Visa, MasterCard, American Express, Discover, Diners Club, JCB, UnionPay, Maestro
+
+```
+GET /api/validate/card
+```
+
+**Query Parameters:**
+
+| Parameter  | Type   | Required | Description        |
+|------------|--------|----------|--------------------|
+| cardNumber | string | Yes      | Credit card number |
+
+**Response:**
+
 ```json
 {
   "card_number": "5451638889576641",
@@ -124,44 +231,81 @@
 }
 ```
 
-### 🔒 AES Encryption Endpoint
-- HTTP Method: **GET**
-- Endpoint: **/api/aes/encrypt?text={text_to_encrypt}&key={encryption_key}**
-- Description: This endpoint encrypts the provided text using AES.
-- Parameters:
-  - `text` (required): The text to be encrypted.
-  - `key` (required): The secret key for encryption.
-- Output:
+---
+
+### AES Encryption
+
+Encrypts text using AES encryption.
+
+```
+GET /api/aes/encrypt
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Description              |
+|-----------|--------|----------|--------------------------|
+| text      | string | Yes      | Text to encrypt          |
+| key       | string | Yes      | Secret encryption key    |
+
+**Response:**
+
 ```json
 {
-  "encrypted": "U2FsdGVkX1... (example encrypted string)"
+  "encrypted": "U2FsdGVkX1..."
 }
 ```
 
-### 🔓 AES Decryption Endpoint
-- HTTP Method: **GET**
-- Endpoint: **/api/aes/decrypt?text={encrypted_text}&key={decryption_key}**
-- Description: This endpoint decrypts the provided AES encrypted text.
-- Parameters:
-  - `text` (required): The AES encrypted text.
-  - `key` (required): The secret key used for encryption.
-- Output:
+---
+
+### AES Decryption
+
+Decrypts AES encrypted text.
+
+```
+GET /api/aes/decrypt
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Description              |
+|-----------|--------|----------|--------------------------|
+| text      | string | Yes      | Encrypted text           |
+| key       | string | Yes      | Secret decryption key    |
+
+**Response:**
+
 ```json
 {
   "decrypted": "your original text"
 }
 ```
 
-### 🔳 QR Code Generation Endpoint
-- HTTP Method: **GET**
-- Endpoint: **/api/generate/qrcode?text={text_for_qr}&size={WIDTHxHEIGHT}**
-- Description: This endpoint generates a QR code image from the provided text.
-- Parameters:
-  - `text` (required): The text or data to encode in the QR code.
-  - `size` (optional): The desired size of the QR code image in pixels, formatted as WIDTHxHEIGHT (e.g., 300x300). Defaults to 200x200.
-- Output:
+---
+
+### QR Code Generation
+
+Generates a QR code image from text.
+
+```
+GET /api/generate/qrcode
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Default | Description                        |
+|-----------|--------|----------|---------|------------------------------------|
+| text      | string | Yes      | -       | Text or data to encode             |
+| size      | string | No       | 200x200 | QR code size (WIDTHxHEIGHT format) |
+
+**Response:**
+
 ```json
 {
   "qrCode": "data:image/png;base64,..."
 }
 ```
+
+## License
+
+This project is licensed under the MIT License. For details, see the `LICENSE` file.
