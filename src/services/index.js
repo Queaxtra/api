@@ -8,6 +8,8 @@ const cardValidationService = require('./cardValidationService');
 const youtubeService = require('./youtubeService');
 const dnsService = require('./dnsService');
 const portScanService = require('./portScanService');
+const colorService = require('./colorService');
+const userAgentService = require('./userAgentService');
 
 module.exports = {
   passwordService,
@@ -19,5 +21,7 @@ module.exports = {
   cardValidationService,
   youtubeService,
   dnsService,
-  portScanService
+  portScanService,
+  colorService,
+  userAgentService
 };

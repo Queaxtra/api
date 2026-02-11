@@ -8,6 +8,8 @@ const cardValidationController = require('./cardValidationController');
 const youtubeController = require('./youtubeController');
 const dnsController = require('./dnsController');
 const portScanController = require('./portScanController');
+const colorController = require('./colorController');
+const userAgentController = require('./userAgentController');
 
 module.exports = {
   passwordController,
@@ -19,5 +21,7 @@ module.exports = {
   cardValidationController,
   youtubeController,
   dnsController,
-  portScanController
+  portScanController,
+  colorController,
+  userAgentController
 };

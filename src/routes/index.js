@@ -8,6 +8,8 @@ const cardValidationRoutes = require('./cardValidationRoutes');
 const youtubeRoutes = require('./youtubeRoutes');
 const dnsRoutes = require('./dnsRoutes');
 const portScanRoutes = require('./portScanRoutes');
+const colorRoutes = require('./colorRoutes');
+const userAgentRoutes = require('./userAgentRoutes');
 
 module.exports = {
   passwordRoutes,
@@ -20,5 +22,7 @@ module.exports = {
   cardValidationRoutes,
   youtubeRoutes,
   dnsRoutes,
-  portScanRoutes
+  portScanRoutes,
+  colorRoutes,
+  userAgentRoutes
 };

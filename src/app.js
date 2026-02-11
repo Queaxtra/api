@@ -11,7 +11,9 @@ const {
   cardValidationRoutes,
   youtubeRoutes,
   dnsRoutes,
-  portScanRoutes
+  portScanRoutes,
+  colorRoutes,
+  userAgentRoutes
 } = require('./routes');
 
 function createApp() {
@@ -38,6 +40,8 @@ function createApp() {
   app.use('/api/aes/decrypt', decryptRouter);
   app.use('/api/dns', dnsRoutes);
   app.use('/api/scan/port', portScanRoutes);
+  app.use('/api/color/convert', colorRoutes);
+  app.use('/api/parse/useragent', userAgentRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

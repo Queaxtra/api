@@ -1,7 +1,7 @@
 {
   "name": "multi-utility-api",
   "version": "1.0.0",
-  "description": "A powerful modular REST API providing password generation, random user generation with fictional credit cards, YouTube audio download, IP geolocation lookup, weather information, credit card validation using Luhn algorithm, AES encryption/decryption, QR code generation, DNS lookup via Cloudflare DoH, and TCP port scanning. Built with Express.js and Nodejs.",
+  "description": "A powerful modular REST API providing password generation, random user generation with fictional credit cards, YouTube audio download, IP geolocation lookup, weather information, credit card validation using Luhn algorithm, AES encryption/decryption, QR code generation, DNS lookup via Cloudflare DoH, TCP port scanning, color format conversion, and User-Agent parsing. Built with Express.js and Nodejs.",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
@@ -32,11 +32,22 @@
     "network-scanner",
     "port-checker",
     "network-security",
+    "color-converter",
+    "hex-to-rgb",
+    "rgb-to-hex",
+    "hsl-conversion",
+    "cmyk-conversion",
+    "color-picker",
     "utility-api",
     "developer-tools",
     "nodejs",
     "express",
-    "modular-architecture"
+    "modular-architecture",
+    "user-agent-parser",
+    "user-agent-detection",
+    "browser-detection",
+    "os-detection",
+    "device-detection"
   ],
   "repository": {
     "type": "git",

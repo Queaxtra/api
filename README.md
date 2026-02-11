@@ -20,6 +20,8 @@ A modular REST API providing various utility endpoints for developers.
   - [QR Code Generation](#qr-code-generation)
   - [DNS Lookup](#dns-lookup)
   - [Port Scanner](#port-scanner)
+  - [Color Converter](#color-converter)
+  - [User-Agent Parser](#user-agent-parser)
 
 ## Installation
 
@@ -435,6 +437,141 @@ curl "http://localhost:3000/api/scan/port?host=example.com&startPort=1&endPort=1
 ```
 
 **Detected Services:** FTP, SSH, TELNET, SMTP, DNS, HTTP, POP3, IMAP, HTTPS, SMB, MySQL, RDP, PostgreSQL, VNC, Redis, MongoDB
+
+---
+
+### Color Converter
+
+Converts colors between HEX, RGB, HSL, and CMYK formats. Provides nearest color name matching.
+
+**Supported Formats:** HEX (#RGB, #RRGGBB), RGB (0-255), HSL (H:0-360, S:0-100, L:0-100), CMYK (0-100)
+
+```
+GET /api/color/convert
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Description                                          |
+|-----------|--------|----------|------------------------------------------------------|
+| from      | string | Yes      | Source format: hex, rgb, hsl, or cmyk                |
+| hex       | string | No       | HEX color (when from=hex) - e.g., #ff5733            |
+| r         | number | No       | Red value (when from=rgb) - 0 to 255                |
+| g         | number | No       | Green value (when from=rgb) - 0 to 255               |
+| b         | number | No       | Blue value (when from=rgb) - 0 to 255                |
+| h         | number | No       | Hue (when from=hsl) - 0 to 360                       |
+| s         | number | No       | Saturation (when from=hsl) - 0 to 100                |
+| l         | number | No       | Lightness (when from=hsl) - 0 to 100                 |
+| c         | number | No       | Cyan (when from=cmyk) - 0 to 100                     |
+| m         | number | No       | Magenta (when from=cmyk) - 0 to 100                  |
+| y         | number | No       | Yellow (when from=cmyk) - 0 to 100                   |
+| k         | number | No       | Key/Black (when from=cmyk) - 0 to 100                |
+
+**Response:**
+
+```json
+{
+  "hex": "#ff5733",
+  "rgb": {
+    "r": 255,
+    "g": 87,
+    "b": 51
+  },
+  "hsl": {
+    "h": 11,
+    "s": 100,
+    "l": 60
+  },
+  "cmyk": {
+    "c": 0,
+    "m": 66,
+    "y": 80,
+    "k": 0
+  },
+  "colorName": "OrangeRed"
+}
+```
+
+**Example Requests:**
+
+```bash
+# Convert HEX to all formats
+curl "http://localhost:3000/api/color/convert?from=hex&hex=#ff5733"
+
+# Convert RGB to all formats
+curl "http://localhost:3000/api/color/convert?from=rgb&r=255&g=87&b=51"
+
+# Convert HSL to all formats
+curl "http://localhost:3000/api/color/convert?from=hsl&h=11&s=100&l=60"
+
+# Convert CMYK to all formats
+curl "http://localhost:3000/api/color/convert?from=cmyk&c=0&m=66&y=80&k=0"
+
+# Shorthand HEX
+curl "http://localhost:3000/api/color/convert?from=hex&hex=f0f"
+```
+
+---
+
+### User-Agent Parser
+
+Parses User-Agent strings to extract browser, operating system, and device information.
+
+**Features:**
+- Browser detection: Chrome, Chromium, Firefox, Safari, Edge, Opera, Samsung Internet
+- OS detection: Windows, macOS, Linux, iOS, Android (with version)
+- Device detection: Desktop, Mobile, Tablet, Bot
+- Vendor and model detection for common devices
+
+```
+GET /api/parse/useragent
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Description                              |
+|-----------|--------|----------|------------------------------------------|
+| ua        | string | No       | User-Agent string (optional, uses header)  |
+
+If no `ua` query parameter is provided, the endpoint automatically parses the `User-Agent` header from the request.
+
+**Response:**
+
+```json
+{
+  "browser": {
+    "name": "Chrome",
+    "version": "120.0.0.0",
+    "engine": "Blink"
+  },
+  "os": {
+    "name": "macOS",
+    "version": "10.15.7",
+    "platform": "Desktop"
+  },
+  "device": {
+    "type": "Desktop",
+    "model": "Unknown",
+    "vendor": "Apple"
+  },
+  "raw": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+}
+```
+
+**Example Requests:**
+
+```bash
+# Parse request's User-Agent header
+curl "http://localhost:3000/api/parse/useragent"
+
+# Parse custom User-Agent string
+curl "http://localhost:3000/api/parse/useragent?ua=Mozilla/5.0%20(iPhone;%20CPU%20iPhone%20OS%2016_0%20like%20Mac%20OS%20X)%20AppleWebKit/605.1.15%20(KHTML,%20like%20Gecko)%20Version/16.0%20Mobile/15E148%20Safari/604.1"
+
+# Parse Android Chrome
+curl "http://localhost:3000/api/parse/useragent?ua=Mozilla/5.0%20(Linux;%20Android%2014;%20SM-G998B)%20AppleWebKit/537.36%20(KHTML,%20like%20Gecko)%20Chrome/120.0.0.0%20Mobile%20Safari/537.36"
+```
+
+---
 
 ## License
 
