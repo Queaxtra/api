@@ -7,6 +7,7 @@ const { encryptRouter, decryptRouter } = require('./aesRoutes');
 const cardValidationRoutes = require('./cardValidationRoutes');
 const youtubeRoutes = require('./youtubeRoutes');
 const dnsRoutes = require('./dnsRoutes');
+const portScanRoutes = require('./portScanRoutes');
 
 module.exports = {
   passwordRoutes,
@@ -18,5 +19,6 @@ module.exports = {
   decryptRouter,
   cardValidationRoutes,
   youtubeRoutes,
-  dnsRoutes
+  dnsRoutes,
+  portScanRoutes
 };

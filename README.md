@@ -19,6 +19,7 @@ A modular REST API providing various utility endpoints for developers.
   - [AES Decryption](#aes-decryption)
   - [QR Code Generation](#qr-code-generation)
   - [DNS Lookup](#dns-lookup)
+  - [Port Scanner](#port-scanner)
 
 ## Installation
 
@@ -370,6 +371,70 @@ curl "http://localhost:3000/api/dns?domain=_dmarc.google.com&type=TXT"
 # Query NS records
 curl "http://localhost:3000/api/dns?domain=google.com&type=NS"
 ```
+
+---
+
+### Port Scanner
+
+Scans TCP ports on a target host to check if they are open or closed.
+
+**Features:**
+- Scan specific port ranges (max 1000 ports per request)
+- Scan comma-separated list of ports
+- Service name detection for common ports
+- Concurrent scanning with rate limiting
+
+```
+GET /api/scan/port
+```
+
+**Query Parameters:**
+
+| Parameter  | Type   | Required | Default | Description                              |
+|------------|--------|----------|---------|------------------------------------------|
+| host       | string | Yes      | -       | Target hostname or IP address            |
+| startPort  | number | No       | 1       | Starting port for range scan             |
+| endPort    | number | No       | 1000    | Ending port for range scan               |
+| ports      | string | No       | -       | Comma-separated port list (e.g., 80,443) |
+| timeout    | number | No       | 2000    | Connection timeout in milliseconds       |
+
+**Response:**
+
+```json
+{
+  "host": "example.com",
+  "totalScanned": 1000,
+  "openCount": 3,
+  "closedCount": 997,
+  "openPorts": [
+    { "port": 22, "service": "SSH" },
+    { "port": 80, "service": "HTTP" },
+    { "port": 443, "service": "HTTPS" }
+  ],
+  "scanDetails": [
+    { "port": 22, "status": "open", "service": "SSH" },
+    { "port": 23, "status": "closed", "service": null }
+  ]
+}
+```
+
+**Example Requests:**
+
+```bash
+# Scan common port range (1-1000)
+curl "http://localhost:3000/api/scan/port?host=example.com"
+
+# Scan specific range
+curl "http://localhost:3000/api/scan/port?host=192.168.1.1&startPort=20&endPort=100"
+
+# Scan specific ports
+curl "http://localhost:3000/api/scan/port?host=example.com&ports=22,80,443,3306,5432"
+
+# Custom timeout (5 seconds)
+curl "http://localhost:3000/api/scan/port?host=example.com&startPort=1&endPort=100&timeout=5000"
+```
+
+**Detected Services:** FTP, SSH, TELNET, SMTP, DNS, HTTP, POP3, IMAP, HTTPS, SMB, MySQL, RDP, PostgreSQL, VNC, Redis, MongoDB
 
 ## License
 
