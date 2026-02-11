@@ -9,7 +9,8 @@ const {
   encryptRouter,
   decryptRouter,
   cardValidationRoutes,
-  youtubeRoutes
+  youtubeRoutes,
+  dnsRoutes
 } = require('./routes');
 
 function createApp() {
@@ -34,6 +35,7 @@ function createApp() {
   app.use('/api/generate/qrcode', qrCodeRoutes);
   app.use('/api/aes/encrypt', encryptRouter);
   app.use('/api/aes/decrypt', decryptRouter);
+  app.use('/api/dns', dnsRoutes);
 
   app.use(notFoundHandler);
   app.use(errorHandler);

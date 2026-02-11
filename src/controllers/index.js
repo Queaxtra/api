@@ -6,6 +6,7 @@ const qrCodeController = require('./qrCodeController');
 const aesController = require('./aesController');
 const cardValidationController = require('./cardValidationController');
 const youtubeController = require('./youtubeController');
+const dnsController = require('./dnsController');
 
 module.exports = {
   passwordController,
@@ -15,5 +16,6 @@ module.exports = {
   qrCodeController,
   aesController,
   cardValidationController,
-  youtubeController
+  youtubeController,
+  dnsController
 };

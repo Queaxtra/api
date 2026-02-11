@@ -18,6 +18,7 @@ A modular REST API providing various utility endpoints for developers.
   - [AES Encryption](#aes-encryption)
   - [AES Decryption](#aes-decryption)
   - [QR Code Generation](#qr-code-generation)
+  - [DNS Lookup](#dns-lookup)
 
 ## Installation
 
@@ -304,6 +305,70 @@ GET /api/generate/qrcode
 {
   "qrCode": "data:image/png;base64,..."
 }
+```
+
+---
+
+### DNS Lookup
+
+Queries DNS records for a domain using Cloudflare's DNS-over-HTTPS API.
+
+**Supported Record Types:** A, AAAA, CNAME, MX, NS, SOA, TXT, SRV, PTR, CAA
+
+```
+GET /api/dns
+```
+
+**Query Parameters:**
+
+| Parameter | Type   | Required | Default | Description                      |
+|-----------|--------|----------|---------|----------------------------------|
+| domain    | string | Yes      | -       | Domain name to query             |
+| type      | string | No       | A       | DNS record type (A, MX, TXT...)  |
+
+**Response:**
+
+```json
+{
+  "domain": "google.com",
+  "recordType": "A",
+  "records": [
+    {
+      "name": "google.com",
+      "type": "A",
+      "typeId": 1,
+      "ttl": 300,
+      "data": "142.250.185.78"
+    },
+    {
+      "name": "google.com",
+      "type": "A",
+      "typeId": 1,
+      "ttl": 300,
+      "data": "142.250.185.46"
+    }
+  ],
+  "ttl": 300
+}
+```
+
+**Example Requests:**
+
+```bash
+# Query A records (default)
+curl "http://localhost:3000/api/dns?domain=google.com"
+
+# Query MX records
+curl "http://localhost:3000/api/dns?domain=google.com&type=MX"
+
+# Query AAAA (IPv6) records
+curl "http://localhost:3000/api/dns?domain=cloudflare.com&type=AAAA"
+
+# Query TXT records (SPF/DMARC)
+curl "http://localhost:3000/api/dns?domain=_dmarc.google.com&type=TXT"
+
+# Query NS records
+curl "http://localhost:3000/api/dns?domain=google.com&type=NS"
 ```
 
 ## License

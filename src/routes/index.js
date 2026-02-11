@@ -6,6 +6,7 @@ const qrCodeRoutes = require('./qrCodeRoutes');
 const { encryptRouter, decryptRouter } = require('./aesRoutes');
 const cardValidationRoutes = require('./cardValidationRoutes');
 const youtubeRoutes = require('./youtubeRoutes');
+const dnsRoutes = require('./dnsRoutes');
 
 module.exports = {
   passwordRoutes,
@@ -16,5 +17,6 @@ module.exports = {
   encryptRouter,
   decryptRouter,
   cardValidationRoutes,
-  youtubeRoutes
+  youtubeRoutes,
+  dnsRoutes
 };

@@ -1,20 +1,54 @@
 {
-  "name": "api",
+  "name": "multi-utility-api",
   "version": "1.0.0",
-  "description": "This API was created to provide different help to users.",
+  "description": "A powerful modular REST API providing password generation, random user generation with fictional credit cards, YouTube audio download, IP geolocation lookup, weather information, credit card validation using Luhn algorithm, AES encryption/decryption, QR code generation, and DNS lookup via Cloudflare DoH. Built with Express.js and Node.js.",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "keywords": [
+    "api",
+    "rest-api",
+    "express-api",
+    "password-generator",
+    "random-user-generator",
+    "credit-card-validator",
+    "luhn-algorithm",
+    "youtube-downloader",
+    "youtube-audio",
+    "ip-geolocation",
+    "ip-lookup",
+    "weather-api",
+    "weather-forecast",
+    "aes-encryption",
+    "aes-decryption",
+    "qr-code-generator",
+    "dns-lookup",
+    "dns-over-https",
+    "cloudflare-doh",
+    "utility-api",
+    "developer-tools",
+    "nodejs",
+    "express",
+    "modular-architecture"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Queaxtra/api.git"
+  },
+  "homepage": "https://github.com/Queaxtra/api#readme",
+  "bugs": {
+    "url": "https://github.com/Queaxtra/api/issues"
+  },
   "author": "Queaxtra",
   "license": "MIT",
   "dependencies": {
     "@distube/ytdl-core": "^4.16.12",
-    "cors": "^2.8.5",
+    "cors": "^2.8.6",
     "cross-fetch": "^4.1.0",
     "crypto-js": "^4.2.0",
-    "dotenv": "^17.2.3",
+    "dotenv": "^17.2.4",
     "express": "^5.2.1",
     "ipapi.co": "^0.3.0",
     "nodemon": "^3.1.11",
