@@ -5,6 +5,14 @@ function validateDownloadParams(url, title) {
     return { valid: false, error: 'Bad Request: URL and title are required.' };
   }
 
+  if (!ytdl.validateURL(url)) {
+    return { valid: false, error: 'Bad Request: A valid YouTube URL is required.' };
+  }
+
+  if (title.length > 120) {
+    return { valid: false, error: 'Bad Request: Title is too long.' };
+  }
+
   return { valid: true };
 }
 
@@ -17,7 +25,10 @@ async function getAudioStream(url) {
       return { success: false, error: 'Bad Request: No suitable formats found.' };
     }
 
-    const stream = ytdl(url, { format: formats[0].format });
+    const stream = ytdl(url, {
+      format: formats[0],
+      highWaterMark: 1 << 20
+    });
 
     return { success: true, stream };
   } catch (error) {

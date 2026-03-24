@@ -1,7 +1,9 @@
 const fetch = require('cross-fetch');
+const { createMemoryCache, fetchJson } = require('../utils');
 
 const CLOUDFLARE_DOH_URL = 'https://cloudflare-dns.com/dns-query';
 const VALID_RECORD_TYPES = ['A', 'AAAA', 'CNAME', 'MX', 'NS', 'SOA', 'TXT', 'SRV', 'PTR', 'CAA'];
+const DNS_CACHE = createMemoryCache({ ttlMs: 60 * 1000, maxEntries: 200 });
 
 // validates domain format using regex - ensures proper structure
 const DOMAIN_REGEX = /^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z0-9][a-zA-Z0-9-]{0,61}[a-zA-Z0-9]$/;
@@ -43,9 +45,18 @@ function validateRecordType(type) {
 
 async function lookupDns(domain, recordType = 'A') {
   try {
+    const cacheKey = `${domain}:${recordType}`;
+    const cached = DNS_CACHE.get(cacheKey);
+
+    if (cached) {
+      return { success: true, data: cached };
+    }
+
     const url = `${CLOUDFLARE_DOH_URL}?name=${encodeURIComponent(domain)}&type=${recordType}`;
 
-    const response = await fetch(url, {
+    const { response, data } = await fetchJson(fetch, url, {
+      timeoutMs: 4000,
+      maxBytes: 256 * 1024,
       headers: {
         'Accept': 'application/dns-json'
       }
@@ -57,9 +68,6 @@ async function lookupDns(domain, recordType = 'A') {
         error: `dns query failed with status: ${response.status}`
       };
     }
-
-    const data = await response.json();
-
     // check for dns response codes - 0 is NOERROR
     if (data.Status !== 0) {
       const statusMessages = {
@@ -96,7 +104,7 @@ async function lookupDns(domain, recordType = 'A') {
       data: record.data
     }));
 
-    return {
+    const result = {
       success: true,
       data: {
         domain,
@@ -105,6 +113,9 @@ async function lookupDns(domain, recordType = 'A') {
         ttl: records[0]?.ttl || null
       }
     };
+
+    DNS_CACHE.set(cacheKey, result.data);
+    return result;
   } catch (error) {
     return {
       success: false,

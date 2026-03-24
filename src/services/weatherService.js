@@ -1,5 +1,9 @@
 const fetch = require('cross-fetch');
 const { WEATHER_DESCRIPTIONS } = require('../constants');
+const { createMemoryCache, fetchJson } = require('../utils');
+
+const LOCATION_CACHE = createMemoryCache({ ttlMs: 10 * 60 * 1000, maxEntries: 200 });
+const WEATHER_CACHE = createMemoryCache({ ttlMs: 2 * 60 * 1000, maxEntries: 200 });
 
 function getWeatherDescription(code) {
   return WEATHER_DESCRIPTIONS[code] || 'Unknown Weather';
@@ -17,37 +21,53 @@ function validateCity(city) {
 }
 
 async function getCoordinates(city) {
+  const cacheKey = city.trim().toLowerCase();
+  const cachedLocation = LOCATION_CACHE.get(cacheKey);
+
+  if (cachedLocation) {
+    return cachedLocation;
+  }
+
   const geocodingUrl = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=en&format=json`;
-  const response = await fetch(geocodingUrl);
+  const { response, data } = await fetchJson(fetch, geocodingUrl, { timeoutMs: 4000, maxBytes: 256 * 1024 });
 
   if (!response.ok) {
     throw new Error(`Geocoding API error: ${response.status} - ${response.statusText}`);
   }
 
-  const data = await response.json();
-
   if (!data.results || data.results.length === 0) {
     return { found: false };
   }
 
-  return {
+  const location = {
     found: true,
     latitude: data.results[0].latitude,
     longitude: data.results[0].longitude,
     name: data.results[0].name,
     country: data.results[0].country
   };
+
+  LOCATION_CACHE.set(cacheKey, location);
+  return location;
 }
 
 async function fetchWeatherData(latitude, longitude) {
+  const cacheKey = `${latitude},${longitude}`;
+  const cachedWeather = WEATHER_CACHE.get(cacheKey);
+
+  if (cachedWeather) {
+    return cachedWeather;
+  }
+
   const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation_probability,precipitation,rain,showers,snowfall,weather_code,cloud_cover,wind_speed_10m,wind_direction_10m&timezone=auto&forecast_days=1`;
-  const response = await fetch(weatherUrl);
+  const { response, data } = await fetchJson(fetch, weatherUrl, { timeoutMs: 4000, maxBytes: 512 * 1024 });
 
   if (!response.ok) {
     throw new Error(`Weather API error: ${response.status} - ${response.statusText}`);
   }
 
-  return response.json();
+  WEATHER_CACHE.set(cacheKey, data);
+  return data;
 }
 
 function formatWeatherResponse(location, weatherData) {

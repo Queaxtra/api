@@ -5,6 +5,14 @@ function validateAesParams(text, key) {
     return { valid: false, error: 'Bad Request: Text and key are required.' };
   }
 
+  if (String(text).length > 8192) {
+    return { valid: false, error: 'Bad Request: Text is too long.' };
+  }
+
+  if (String(key).length < 16 || String(key).length > 128) {
+    return { valid: false, error: 'Bad Request: Key length must be between 16 and 128 characters.' };
+  }
+
   return { valid: true };
 }
 

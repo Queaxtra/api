@@ -4,8 +4,8 @@ const { HTTP_STATUS } = require('../constants');
 
 async function encrypt(req, res) {
   try {
-    const text = req.query.text;
-    const key = req.query.key;
+    const text = req.body?.text ?? req.query.text;
+    const key = req.body?.key ?? req.query.key;
     const validation = aesService.validateAesParams(text, key);
 
     if (!validation.valid) {
@@ -28,8 +28,8 @@ async function encrypt(req, res) {
 
 async function decrypt(req, res) {
   try {
-    const text = req.query.text;
-    const key = req.query.key;
+    const text = req.body?.text ?? req.query.text;
+    const key = req.body?.key ?? req.query.key;
     const validation = aesService.validateAesParams(text, key);
 
     if (!validation.valid) {

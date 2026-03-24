@@ -12,6 +12,9 @@ const {
   generateRandomDate
 } = require('./randomGenerator');
 const { sendSuccess, sendError } = require('./responseHelper');
+const { createMemoryCache } = require('./cache');
+const { fetchJson } = require('./network');
+const { sanitizeDownloadFilename } = require('./sanitizer');
 
 module.exports = {
   generatePassword,
@@ -24,5 +27,8 @@ module.exports = {
   getRandomInt,
   generateRandomDate,
   sendSuccess,
-  sendError
+  sendError,
+  createMemoryCache,
+  fetchJson,
+  sanitizeDownloadFilename
 };

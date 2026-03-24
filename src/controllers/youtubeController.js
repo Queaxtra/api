@@ -1,5 +1,6 @@
 const { youtubeService } = require('../services');
 const { HTTP_STATUS } = require('../constants');
+const { sanitizeDownloadFilename } = require('../utils');
 
 async function downloadAudio(req, res) {
   try {
@@ -19,7 +20,9 @@ async function downloadAudio(req, res) {
       return;
     }
 
-    res.header('Content-Disposition', `attachment; filename="${title}.mp3"`);
+    const safeFilename = sanitizeDownloadFilename(title);
+    res.header('Content-Disposition', `attachment; filename="${safeFilename}.mp3"`);
+    res.type('audio/mpeg');
 
     result.stream.on('error', (err) => {
       console.error('Stream Error:', err);

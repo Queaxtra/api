@@ -1,20 +1,23 @@
 const cors = require('cors');
 
-const corsOptions = {
-  origin: '*',
-  methods: ['GET', 'POST', 'OPTIONS', 'PUT', 'PATCH', 'DELETE'],
-  allowedHeaders: ['X-Requested-With', 'content-type']
-};
+function setupCors(app, config) {
+  const allowedOrigins = config.security.corsOrigins;
+  const origin = allowedOrigins.length === 0
+    ? '*'
+    : function resolveOrigin(requestOrigin, callback) {
+      if (!requestOrigin || allowedOrigins.includes(requestOrigin)) {
+        callback(null, true);
+        return;
+      }
 
-function setupCors(app) {
-  app.use(cors(corsOptions));
+      callback(new Error('CORS origin is not allowed.'));
+    };
 
-  app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    next();
-  });
+  app.use(cors({
+    origin,
+    methods: ['GET', 'POST', 'OPTIONS'],
+    allowedHeaders: ['X-Requested-With', 'Content-Type', 'X-Api-Key', 'X-Request-Id']
+  }));
 }
 
 module.exports = { setupCors };

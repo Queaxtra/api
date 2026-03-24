@@ -33,7 +33,7 @@ async function scanPorts(req, res) {
     const result = await portScanService.scanPorts(host, portValidation, timeoutMs);
 
     if (!result.success) {
-      sendError(res, result.error, 500);
+      sendError(res, result.error, result.statusCode || 500);
       return;
     }
 

@@ -21,6 +21,10 @@ function parsePasswordOptions(query) {
     throw new Error('Password length must be a positive number.');
   }
 
+  if (length > 256) {
+    throw new Error('Password length must not exceed 256 characters.');
+  }
+
   return {
     length,
     options: {

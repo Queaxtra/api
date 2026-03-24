@@ -1,6 +1,7 @@
 const ipapi = require('ipapi.co');
 
-const IP_REGEX = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/;
+const IPV4_SEGMENT = '(25[0-5]|2[0-4]\\d|1\\d\\d|[1-9]?\\d)';
+const IP_REGEX = new RegExp(`^(?:${IPV4_SEGMENT}\\.){3}${IPV4_SEGMENT}$`);
 
 function validateIpAddress(ipAddress) {
   if (!ipAddress) {

@@ -1,5 +1,16 @@
 const express = require('express');
-const { setupCors, errorHandler, notFoundHandler } = require('./middlewares');
+const { getConfig } = require('./config');
+const {
+  setupCors,
+  applySecurityHeaders,
+  createRateLimiter,
+  attachRequestContext,
+  requestLogger,
+  createApiKeyMiddleware,
+  createHealthHandlers,
+  errorHandler,
+  notFoundHandler
+} = require('./middlewares');
 const {
   passwordRoutes,
   userRoutes,
@@ -16,30 +27,45 @@ const {
   userAgentRoutes
 } = require('./routes');
 
-function createApp() {
+function createApp(config = getConfig()) {
   const app = express();
+  const expensiveRouteLimiter = createRateLimiter({
+    windowMs: config.security.expensiveRouteWindowMs,
+    max: config.security.expensiveRouteLimit
+  });
+  const requireApiKey = createApiKeyMiddleware({
+    enabled: config.security.requireApiKey,
+    apiKeys: config.security.apiKeys
+  });
+  const { healthHandler, readinessHandler } = createHealthHandlers(config);
 
   app.set('trust proxy', true);
-  app.use(express.urlencoded({ extended: true }));
-  app.use(express.json());
+  app.disable('x-powered-by');
+  app.use(express.urlencoded({ extended: false, limit: config.http.bodyLimit }));
+  app.use(express.json({ limit: config.http.bodyLimit }));
 
-  setupCors(app);
+  app.use(attachRequestContext);
+  app.use(requestLogger);
+  app.use(applySecurityHeaders);
+  setupCors(app, config);
 
   app.get('/', (req, res) => {
     res.json({ message: 'Welcome to the API!' });
   });
+  app.get('/health', healthHandler);
+  app.get('/ready', readinessHandler);
 
   app.use('/api/generate/password', passwordRoutes);
   app.use('/api/generate/user', userRoutes);
-  app.use('/api/yt/download', youtubeRoutes);
-  app.use('/api/ip', ipRoutes);
-  app.use('/api/weather', weatherRoutes);
+  app.use('/api/yt/download', requireApiKey, expensiveRouteLimiter, youtubeRoutes);
+  app.use('/api/ip', requireApiKey, expensiveRouteLimiter, ipRoutes);
+  app.use('/api/weather', requireApiKey, expensiveRouteLimiter, weatherRoutes);
   app.use('/api/validate/card', cardValidationRoutes);
-  app.use('/api/generate/qrcode', qrCodeRoutes);
-  app.use('/api/aes/encrypt', encryptRouter);
-  app.use('/api/aes/decrypt', decryptRouter);
-  app.use('/api/dns', dnsRoutes);
-  app.use('/api/scan/port', portScanRoutes);
+  app.use('/api/generate/qrcode', requireApiKey, expensiveRouteLimiter, qrCodeRoutes);
+  app.use('/api/aes/encrypt', requireApiKey, expensiveRouteLimiter, encryptRouter);
+  app.use('/api/aes/decrypt', requireApiKey, expensiveRouteLimiter, decryptRouter);
+  app.use('/api/dns', requireApiKey, expensiveRouteLimiter, dnsRoutes);
+  app.use('/api/scan/port', requireApiKey, expensiveRouteLimiter, portScanRoutes);
   app.use('/api/color/convert', colorRoutes);
   app.use('/api/parse/useragent', userAgentRoutes);
 
