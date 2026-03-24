@@ -16,7 +16,7 @@ function setupCors(app, config) {
   app.use(cors({
     origin,
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: ['X-Requested-With', 'Content-Type', 'X-Api-Key', 'X-Request-Id']
+    allowedHeaders: ['X-Requested-With', 'Content-Type', 'X-Request-Id']
   }));
 }
 

@@ -12,22 +12,6 @@ function parsePositiveInt(value, fallback) {
   return parsed;
 }
 
-function parseBoolean(value, fallback = false) {
-  if (value === undefined || value === null || value === '') {
-    return fallback;
-  }
-
-  if (value === 'true') {
-    return true;
-  }
-
-  if (value === 'false') {
-    return false;
-  }
-
-  throw new Error(`Invalid boolean configuration value: ${value}`);
-}
-
 function parseList(value) {
   if (!value) {
     return [];
@@ -42,7 +26,6 @@ function parseList(value) {
 function getConfig(env = process.env) {
   const nodeEnv = env.NODE_ENV || 'development';
   const isProduction = nodeEnv === 'production';
-  const apiKeys = parseList(env.API_KEYS);
   const corsOrigins = parseList(env.CORS_ORIGINS);
 
   const config = {
@@ -61,8 +44,6 @@ function getConfig(env = process.env) {
     },
     security: {
       corsOrigins,
-      requireApiKey: parseBoolean(env.REQUIRE_API_KEY, isProduction),
-      apiKeys,
       expensiveRouteLimit: parsePositiveInt(env.EXPENSIVE_ROUTE_LIMIT, 20),
       expensiveRouteWindowMs: parsePositiveInt(env.EXPENSIVE_ROUTE_WINDOW_MS, 60 * 1000)
     }
@@ -73,10 +54,6 @@ function getConfig(env = process.env) {
 }
 
 function validateConfig(config) {
-  if (config.security.requireApiKey && config.security.apiKeys.length === 0) {
-    throw new Error('API_KEYS must be configured when REQUIRE_API_KEY is enabled.');
-  }
-
   if (config.app.isProduction && config.security.corsOrigins.length === 0) {
     throw new Error('CORS_ORIGINS must be configured in production.');
   }

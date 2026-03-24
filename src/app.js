@@ -6,7 +6,6 @@ const {
   createRateLimiter,
   attachRequestContext,
   requestLogger,
-  createApiKeyMiddleware,
   createHealthHandlers,
   errorHandler,
   notFoundHandler
@@ -33,10 +32,6 @@ function createApp(config = getConfig()) {
     windowMs: config.security.expensiveRouteWindowMs,
     max: config.security.expensiveRouteLimit
   });
-  const requireApiKey = createApiKeyMiddleware({
-    enabled: config.security.requireApiKey,
-    apiKeys: config.security.apiKeys
-  });
   const { healthHandler, readinessHandler } = createHealthHandlers(config);
 
   app.set('trust proxy', true);
@@ -57,15 +52,15 @@ function createApp(config = getConfig()) {
 
   app.use('/api/generate/password', passwordRoutes);
   app.use('/api/generate/user', userRoutes);
-  app.use('/api/yt/download', requireApiKey, expensiveRouteLimiter, youtubeRoutes);
-  app.use('/api/ip', requireApiKey, expensiveRouteLimiter, ipRoutes);
-  app.use('/api/weather', requireApiKey, expensiveRouteLimiter, weatherRoutes);
+  app.use('/api/yt/download', expensiveRouteLimiter, youtubeRoutes);
+  app.use('/api/ip', expensiveRouteLimiter, ipRoutes);
+  app.use('/api/weather', expensiveRouteLimiter, weatherRoutes);
   app.use('/api/validate/card', cardValidationRoutes);
-  app.use('/api/generate/qrcode', requireApiKey, expensiveRouteLimiter, qrCodeRoutes);
-  app.use('/api/aes/encrypt', requireApiKey, expensiveRouteLimiter, encryptRouter);
-  app.use('/api/aes/decrypt', requireApiKey, expensiveRouteLimiter, decryptRouter);
-  app.use('/api/dns', requireApiKey, expensiveRouteLimiter, dnsRoutes);
-  app.use('/api/scan/port', requireApiKey, expensiveRouteLimiter, portScanRoutes);
+  app.use('/api/generate/qrcode', expensiveRouteLimiter, qrCodeRoutes);
+  app.use('/api/aes/encrypt', expensiveRouteLimiter, encryptRouter);
+  app.use('/api/aes/decrypt', expensiveRouteLimiter, decryptRouter);
+  app.use('/api/dns', expensiveRouteLimiter, dnsRoutes);
+  app.use('/api/scan/port', expensiveRouteLimiter, portScanRoutes);
   app.use('/api/color/convert', colorRoutes);
   app.use('/api/parse/useragent', userAgentRoutes);
 

@@ -10,7 +10,6 @@ function createHealthHandlers(config) {
   function readinessHandler(req, res) {
     res.status(200).json({
       status: 'ready',
-      apiKeyProtection: config.security.requireApiKey,
       corsConfigured: config.security.corsOrigins.length > 0 || !config.app.isProduction
     });
   }
