@@ -71,12 +71,14 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "ipapi.co": "^0.3.0",
+    "path-to-regexp": ">=8.4.0",
     "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "nodemon": "^3.1.14"
   },
   "overrides": {
-    "undici": "^7.24.5"
+    "undici": "^7.24.5",
+    "path-to-regexp": ">=8.4.0"
   }
 }
